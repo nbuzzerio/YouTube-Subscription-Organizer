@@ -1,0 +1,37 @@
+{
+  "name": "YouTube_Subscription_Organizer",
+  "version": "1.0.0",
+  "description": "Application will allow users to organize their youtube subscriptions into categories allowing them to more easily find videos on certain topics.",
+  "main": "index.js",
+  "scripts": {
+    "react-dev": "webpack -d --watch",
+    "server": "nodemon server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nbuzzerio/YouTube-Subscription-Organizer.git"
+  },
+  "keywords": [],
+  "author": "Nicholas Buzzerio",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nbuzzerio/YouTube-Subscription-Organizer/issues"
+  },
+  "homepage": "https://github.com/nbuzzerio/YouTube-Subscription-Organizer#readme",
+  "devDependencies": {
+    "@babel/core": "^7.11.0",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-react": "^7.10.4",
+    "babel-loader": "^8.1.0",
+    "webpack": "^4.44.1"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.4",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "styled-components": "^5.1.1"
+  }
+}
