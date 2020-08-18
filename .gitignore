@@ -2,3 +2,7 @@ node_modules
 .env
 client_secret*
 bundle.js
+youtube.config.js
+keys.json
+
+package-lock.json
