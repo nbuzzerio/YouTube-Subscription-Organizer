@@ -1,5 +1,5 @@
 {
-  "name": "YouTube_Subscription_Organizer",
+  "name": "youtube_subscription_organizer",
   "version": "1.0.0",
   "description": "Application will allow users to organize their youtube subscriptions into categories allowing them to more easily find videos on certain topics.",
   "main": "index.js",
@@ -7,7 +7,8 @@
     "react-dev": "webpack -d --watch",
     "start": "nodemon server/index.js",
     "test": "jest",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "test-debug" : "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand --watch"
   },
   "repository": {
     "type": "git",
