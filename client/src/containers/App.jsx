@@ -1,56 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import GoogleLoginBtn from '../components/GoogleLoginBtn.jsx';
 
 function App() {
 
-  const [googleAuth, setGoogleAuth] = useState('unavailable');
-  const [accessToken, setAccessToken] = useState(null);
-
-  if (document.cookie !== accessToken) {
-    setAccessToken(document.cookie);
-  }
-
-  if (!accessToken) {
-    useEffect( () => {
-      axios({
-        method: 'get',
-        url: '/googleAuth',
-      })
-      .then(function (response) {
-        // handle success
-        console.log(response.data);
-        setGoogleAuth(response.data);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-        setGoogleAuth('Sorry, google authentication not available at this time');
-      })
-    }, [])
-  }
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect( () => {
-    console.log('we getting here?')
-    axios({
-      method: 'get',
-      url: '/subscription_organizer'
-    })
-    .then(function (response) {
-      // handle success
-      console.log('Subs?:', response.data);
-    })
-    .catch(function (error) {
-      console.log('but are we getting there?')
+    if (document.cookie.substr(0, 11) === 'accessToken') {
+      setLoggedIn(true);
+    }
+  })
 
-      // handle error
-      console.log(error);
-    })
-  }, [accessToken])
+  const loggedInHandler = bool => {
+    //expire cookie to log out
+    document.cookie = 'accessToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+    setLoggedIn(bool);
+  }
+
+  let logBtn;
+
+  if (loggedIn) {
+    logBtn = <button onClick={loggedInHandler.bind(this, false)}>Sign Out</button>
+  } else {
+    logBtn = <GoogleLoginBtn />
+  }
   
   return (
     <div className="app">
-      <h1>YOUTUBE SUBSCRIPTION ORGANIZER</h1>
-      <a href={googleAuth}>Login With Google</a>
+      <h1>WELCOME TO YOUTUBE SUBSCRIPTION ORGANIZER</h1>
+      {logBtn}
     </div>
   )
 
