@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const getGoogleSignIn = () => {
-    return axios({
+const getGoogleSignIn = async () => {
+    return await axios({
       method: 'get',
       url: '/googleAuth',
     })

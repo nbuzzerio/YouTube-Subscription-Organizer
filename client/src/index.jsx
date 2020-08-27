@@ -4,7 +4,5 @@ import React from 'react';
 import App from './containers/App.jsx';
 
 ReactDOM.render(
-
-        <App />,
-
+        <App cookie={document.cookie}/>,
 document.getElementById('app'));

@@ -1,9 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import App from './App.jsx';
-import { shallow } from 'enzyme';
-
+import { shallow, mount } from 'enzyme';
 import GoogleLoginBtn from '../components/GoogleLoginBtn';
-
 
 describe('App', () => {
 
@@ -21,8 +19,17 @@ describe('App', () => {
         expect(appWrapper.containsMatchingElement(welcome)).toEqual(true);
     })
 
-    xit('renders a Google login link', () => {
-        const loginLink = <a href={googleAuth}>Login With Google</a>
-        expect(appWrapper.containsMatchingElement(loginLink)).toEqual(true);
+    it('renders a Google login link if not loggedIn', () => {
+        expect(appWrapper.find(GoogleLoginBtn)).toHaveLength(1);
+        expect(appWrapper.find('button')).toHaveLength(0);
+    })
+
+    it('renders a Sign Out button if loggedIn',  () => {
+
+        const mountedAppWrapper = mount(<App cookie={'accessToken'}/>);
+        
+        expect(mountedAppWrapper.props().cookie).toEqual('accessToken');
+        expect(mountedAppWrapper.find(GoogleLoginBtn)).toHaveLength(0);
+        expect(mountedAppWrapper.find('button')).toHaveLength(1);
     })
 });
