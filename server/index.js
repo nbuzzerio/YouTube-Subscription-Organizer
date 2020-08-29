@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 
 
 const { google } = require('googleapis');
+const { oauth2 } = require('googleapis/build/src/apis/oauth2');
 const OAuth2 = google.auth.OAuth2;
 
 app.use(cookieParser())
@@ -82,6 +83,33 @@ app.get('/subscription_organizer', (req, res) => {
 
     return res.send({subscriptions: response.data.items})
   })
+
+})
+
+app.get('/googleUserInfo', (req, res) => {
+  console.log('Do we arrive here?')
+  if (!req.cookies.accessToken) {
+    return res.redirect('/')
+  }
+
+  const oauth2client = new OAuth2(
+    CONFIG.oauth2Credentials.client_id,
+    CONFIG.oauth2Credentials.client_secret,
+    CONFIG.oauth2Credentials.redirect_uris[0],
+    )
+
+  oauth2client.credentials = jwt.verify(req.cookies.accessToken, CONFIG.ACCESS_TOKEN_SECRET);
+
+  const oauth2 = google.oauth2('v2')
+
+    oauth2.userinfo.get({
+      auth: oauth2client
+    })
+    .then( (response) => {
+      console.log(response)
+  
+      res.send(response)
+    })
 
 })
 

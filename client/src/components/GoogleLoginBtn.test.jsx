@@ -1,8 +1,7 @@
 import React from 'react';
 import GoogleLoginBtn from './GoogleLoginBtn.jsx';
 import { shallow, mount } from 'enzyme';
-import { act } from 'react-dom/test-utils'
-const CONFIG = require('../../../config/youtube.config.js');
+import { act } from 'react-dom/test-utils';
 
 jest.mock("./_getGoogleSignIn", () => {
   return {
