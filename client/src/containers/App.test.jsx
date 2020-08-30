@@ -3,20 +3,23 @@ import App from './App.jsx';
 import { shallow, mount } from 'enzyme';
 import GoogleLoginBtn from '../components/GoogleLoginBtn';
 import SignedInContainer from './SignedInContainer.jsx';
-import { act } from 'react-dom/test-utils';
 
-jest.mock("../components/_getGoogleUserInfo", () => {
+jest.mock("./SignedInContainer", () => {
+    // const React = require("react");
+    let userData = {};
+    userData.given_name = 'TestName';
     return {
       __esModule: true,
-      default: async () => {
-          return {
-              data: {
-                  given_name: 'TestName'
-              }
-          }
-      }
+      default: (() => {
+        return (
+            <div>
+                <h2 className='user'>HELLO, {userData.given_name}</h2>
+            </div>
+        )
+      })
     };
   });
+
 
 describe('App', () => {
 
@@ -47,17 +50,11 @@ describe('App', () => {
         expect(mountedAppWrapper.find('button')).toHaveLength(1);
     })
 
-    it('Passes a username prop if loggedIn',  async () => {
-        let mountedAppWrapper;
-
-        await act(async () => {
-            mountedAppWrapper = mount(<App cookie={'accessToken'}/>);
-        })
-        mountedAppWrapper.update();
+    it('renders a SignedInContainer if loggedIn',  () => {
+        const mountedAppWrapper = mount(<App cookie={'accessToken'}/>);
 
         expect(mountedAppWrapper.props().cookie).toEqual('accessToken');
         expect(mountedAppWrapper.find(SignedInContainer)).toHaveLength(1);
-        expect(mountedAppWrapper.find('button')).toHaveLength(1);
-        expect(mountedAppWrapper.find(SignedInContainer).props().userData.given_name).toEqual('TestName');
     })
+
 });
