@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import getGoogleSignIn from './_getGoogleSignIn.js'
-import { mount } from 'enzyme';
+import getGoogleSignIn from './_getGoogleSignIn.js';
 
 function GoogleLoginBtn(props) {
 
@@ -25,7 +24,7 @@ function GoogleLoginBtn(props) {
       }
     }, [])
  
-  return <a href={googleAuth}>{'Login With Google'}</a>
+  return <a href={googleAuth}>Login With Google</a>
 
 }
 export default GoogleLoginBtn;

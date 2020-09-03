@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-function Category(props) {
+function Video(props) {
 
     return (
         <div>
-            <h5>Category Node PlaceHolder</h5>
+            <h5>Video PlaceHolder</h5>
         </div>
     )
 
 }
-export default Category;
+export default Video;

@@ -87,7 +87,7 @@ app.get('/subscription_organizer', (req, res) => {
 })
 
 app.get('/googleUserInfo', (req, res) => {
-  console.log('Do we arrive here?')
+
   if (!req.cookies.accessToken) {
     return res.redirect('/')
   }
@@ -110,6 +110,24 @@ app.get('/googleUserInfo', (req, res) => {
   
       res.send(response)
     })
+
+})
+
+app.get('/getUserCategories', (req, res) => {
+  
+  if (!req.cookies.accessToken) {
+    return res.redirect('/')
+  }
+
+  const oauth2client = new OAuth2(
+    CONFIG.oauth2Credentials.client_id,
+    CONFIG.oauth2Credentials.client_secret,
+    CONFIG.oauth2Credentials.redirect_uris[0],
+    )
+
+  oauth2client.credentials = jwt.verify(req.cookies.accessToken, CONFIG.ACCESS_TOKEN_SECRET);
+
+  res.send(['category A', 'category B', 'category C'])
 
 })
 
