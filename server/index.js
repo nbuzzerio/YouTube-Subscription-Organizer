@@ -1,5 +1,5 @@
 const express = require('express');
-const path = require('path')
+const path = require('path');
 require('dotenv').config();
 const app = express();
 
@@ -14,9 +14,7 @@ db.authenticate()
   })
   .catch((error) => {
     console.error('Unable to connect to the database: ', error);
-  })
-
-// db.sync();
+  });
 //////////////////////////////////////////////////////
 //////////////////////////////////////////////////////
 
@@ -30,8 +28,8 @@ const { google } = require('googleapis');
 const { oauth2 } = require('googleapis/build/src/apis/oauth2');
 const OAuth2 = google.auth.OAuth2;
 
-app.use(cookieParser())
-app.use(express.static('./client/dist'))
+app.use(cookieParser());
+app.use(express.static('./client/dist'));
 
 //Send Login Screen
 app.get('/googleAuth', (req, res) => {
@@ -39,14 +37,14 @@ app.get('/googleAuth', (req, res) => {
     CONFIG.oauth2Credentials.client_id,
     CONFIG.oauth2Credentials.client_secret,
     CONFIG.oauth2Credentials.redirect_uris[0],
-    )
+  );
 
-    const loginLink = oauth2client.generateAuthUrl({
-      access_type: 'offline',
-      scope: CONFIG.oauth2Credentials.scopes
-    })
-    res.send(loginLink);
-})
+  const loginLink = oauth2client.generateAuthUrl({
+    access_type: 'offline',
+    scope: CONFIG.oauth2Credentials.scopes
+  })
+  res.send(loginLink);
+});
 
 //Handle authorization step
 app.get('/OAuth', (req, res) => {
@@ -55,9 +53,9 @@ app.get('/OAuth', (req, res) => {
     CONFIG.oauth2Credentials.client_id,
     CONFIG.oauth2Credentials.client_secret,
     CONFIG.oauth2Credentials.redirect_uris[0],
-    )
-  
-  if (req.query.error){
+  );
+
+  if (req.query.error) {
     //if user rejects permissions
     return res.redirect('/');
   } else {
@@ -70,9 +68,9 @@ app.get('/OAuth', (req, res) => {
       // res.redirect({accessToken: accessToken}, '/');
       res.cookie('accessToken', accessToken)
       return res.redirect('/');
-    })
+    });
   }
-})
+});
 
 app.get('/subscription_organizer', (req, res) => {
   console.log('Do we arrive here?')
@@ -84,25 +82,25 @@ app.get('/subscription_organizer', (req, res) => {
     CONFIG.oauth2Credentials.client_id,
     CONFIG.oauth2Credentials.client_secret,
     CONFIG.oauth2Credentials.redirect_uris[0],
-    )
+  );
 
   oauth2client.credentials = jwt.verify(req.cookies.accessToken, CONFIG.ACCESS_TOKEN_SECRET);
 
   const youtube = google.youtube('v3');
-  
+
   youtube.subscriptions.list({
     auth: oauth2client,
     mine: true,
     part: 'snippet, contentDetails',
-    maxResults:50
+    maxResults: 50
   })
-  .then( (response) => {
-    console.log(response)
+    .then((response) => {
+      console.log(response)
 
-    return res.send({subscriptions: response.data.items})
-  })
+      return res.send({ subscriptions: response.data.items })
+    });
 
-})
+});
 
 app.get('/googleUserInfo', (req, res) => {
 
@@ -114,25 +112,44 @@ app.get('/googleUserInfo', (req, res) => {
     CONFIG.oauth2Credentials.client_id,
     CONFIG.oauth2Credentials.client_secret,
     CONFIG.oauth2Credentials.redirect_uris[0],
-    )
+  );
 
   oauth2client.credentials = jwt.verify(req.cookies.accessToken, CONFIG.ACCESS_TOKEN_SECRET);
 
   const oauth2 = google.oauth2('v2')
 
-    oauth2.userinfo.get({
-      auth: oauth2client
-    })
-    .then( (response) => {
-      console.log(response)
-  
-      res.send(response)
-    })
+  oauth2.userinfo.get({
+    auth: oauth2client
+  })
+    .then((response) => {
+      let userData = response.data
+      // create a new row for this user in the table
+      db.sync()
+        .then(() => {
+          models.User.findOrCreate({
+            where: {
+              User_Id: userData.id
+            },
+            defaults: {
+              User_Id: userData.id,
+              Email: userData.email,
+              Name: userData.given_name
+            }
+          })
+            .then((response) => {
+              //send info to client only once it is saved
+              res.send(userData);
+            })
+            .catch(err => {
+              console.log('err logging in:', err)
+            })
+        })
+    });
 
-})
+});
 
 app.get('/getUserCategories', (req, res) => {
-  
+
   if (!req.cookies.accessToken) {
     return res.redirect('/')
   }
@@ -141,14 +158,31 @@ app.get('/getUserCategories', (req, res) => {
     CONFIG.oauth2Credentials.client_id,
     CONFIG.oauth2Credentials.client_secret,
     CONFIG.oauth2Credentials.redirect_uris[0],
-    )
+  );
 
   oauth2client.credentials = jwt.verify(req.cookies.accessToken, CONFIG.ACCESS_TOKEN_SECRET);
 
-  res.send(['category A', 'category B', 'category C'])
+  let userId = req.query.user;
+  db.sync()
+    .then(() => {
+      models.Category.findAll({
+        include: [{
+          model: models.User,
+          where: {
+            User_Id: userId
+          },
+        }]
+      })
+        .then((response) => {
+          res.send(response[0]);
+        })
+        .catch(err => {
+          console.log('err logging in:', err)
+        })
+    });
 
-})
+});
 
 app.listen(CONFIG.port, () => {
   console.log(`YouTube-Subscription-Organizer app listening at ${CONFIG.baseUrl}`);
-})
+});

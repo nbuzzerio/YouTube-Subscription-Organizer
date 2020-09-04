@@ -5,7 +5,7 @@ const getGoogleUserInfo = async () => {
       method: 'get',
       url: '/googleUserInfo'
     })
-    .then( res => res.data)
+    .then( res => res)
     .catch( err => {throw err})
 };
 

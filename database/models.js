@@ -5,7 +5,7 @@ const Subscription = db.define('Subscription', {})
 
 const Channel = db.define('Channel', {
     Channel_Id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         primaryKey: true
     },
     Channel_Name: {
@@ -29,22 +29,22 @@ const Channel = db.define('Channel', {
     Total_Videos: {
         type: DataTypes.INTEGER
     },
-})
+});
 
 const User = db.define('User', {
     User_Id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         primaryKey: true
     },
-    EMAIL: {
+    Email: {
         type: DataTypes.STRING
     },
     Name: {
         type: DataTypes.STRING
     },
-})
+});
 
-const Category_Channel = db.define('Category_Channel', {})
+const Category_Channel = db.define('Category_Channel', {});
 
 const Category = db.define('Category', {
     Category_Id: {
@@ -55,7 +55,7 @@ const Category = db.define('Category', {
     Category_Name: {
         type: DataTypes.STRING
     },
-})
+});
 
 ///////ASSOCIACTIONS///////
 //USER
@@ -80,4 +80,4 @@ module.exports = {
     User: User,
     Category_Channel: Category_Channel,
     Category: Category
-}
+};

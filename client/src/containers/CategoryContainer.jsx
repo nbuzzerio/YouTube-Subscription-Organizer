@@ -6,10 +6,9 @@ import getUserCategories from '../components/_getUserCategories.js';
 function CategoryContainer(props) {
 
   const [categoryData, setCategoryData] = useState(null);
-  // console.log('checking categoryData ', categoryData)
   useEffect(() => {
     let mounted = true;
-    getUserCategories(props.userData)
+    getUserCategories(props.userData.id)
       .then(userCategories => {
         if (mounted) {
           setCategoryData(userCategories);
