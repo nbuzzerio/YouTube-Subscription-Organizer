@@ -1,6 +1,24 @@
 const express = require('express');
+const path = require('path')
 require('dotenv').config();
 const app = express();
+
+//////////////////////////////////////////////////////
+//                    DATABASE                      //
+//////////////////////////////////////////////////////
+const db = require('../database/index.js');
+const models = require('../database/models.js');
+db.authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch((error) => {
+    console.error('Unable to connect to the database: ', error);
+  })
+
+// db.sync();
+//////////////////////////////////////////////////////
+//////////////////////////////////////////////////////
 
 const CONFIG = require('../config/youtube.config.js');
 
