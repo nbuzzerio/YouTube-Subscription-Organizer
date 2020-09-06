@@ -13,6 +13,7 @@ function CategoryInput(props) {
 
   const handleCreate = (event) => {
     event.preventDefault();
+    setText('');
     if (!validInput) {
       setValidInput(true);
     }
@@ -41,7 +42,7 @@ function CategoryInput(props) {
 
   let inputError;
   if (!validInput) {
-    inputError = <p style={{ color: "#D00000" }}>Error: You already have that category!</p>
+    inputError = <p style={{ color: "#D00000" }}>You already have that category!</p>
   }
 
   return (
@@ -51,7 +52,6 @@ function CategoryInput(props) {
             <input type="text" value={text} onChange={handleChange} />
       </label>
       {inputError}
-      {console.log('test is over', inputError, text)}
       <input type="submit" value="Submit" />
     </form>
   );

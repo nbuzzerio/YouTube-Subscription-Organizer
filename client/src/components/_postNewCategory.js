@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const postNewCategory = async (newCategory, userId) => {
-  console.log('inside ajax', newCategory, userId)
   return await axios({
     method: 'post',
     url: '/postNewCategory',
