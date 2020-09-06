@@ -58,7 +58,7 @@ describe('SignedInContainer', () => {
         mountedSignedInContainerWrapper.unmount()
     });
 
-    it('should pass useData, selectedCategory, & setSelectedCategory down as props to CategoryContainer', async () => {
+    it('should pass userData, selectedCategory, & setSelectedCategory down as props to CategoryContainer', async () => {
         let mountedSignedInContainerWrapper;
 
         await act(async () => {
@@ -74,7 +74,7 @@ describe('SignedInContainer', () => {
         mountedSignedInContainerWrapper.unmount()
     });
 
-    it('should pass useData down as props to SubContainer', async () => {
+    it('should pass userData down as props to SubContainer', async () => {
         let mountedSignedInContainerWrapper;
 
         await act(async () => {

@@ -8,7 +8,8 @@
     "start": "nodemon server/index.js",
     "test": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test-debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand --watch"
+    "test-debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand --watch",
+    "test-leaks": "jest --runInBand --detectOpenHandles"
   },
   "repository": {
     "type": "git",

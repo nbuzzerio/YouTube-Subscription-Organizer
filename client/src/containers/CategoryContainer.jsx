@@ -8,6 +8,7 @@ function CategoryContainer(props) {
   const [categoryData, setCategoryData] = useState(null);
   useEffect(() => {
     let mounted = true;
+
     getUserCategories(props.userData.id)
       .then(userCategories => {
         if (mounted) {
@@ -21,12 +22,13 @@ function CategoryContainer(props) {
       mounted = false;
     }
   }, [])
+
   let categoryMsg;
   if (categoryData) {
     categoryMsg = <div>
       <h3>Select a Category</h3>
-      <CategoryInput setCategoryData={setCategoryData} />
-      <CategoryCarousel nothing='nothing huh' setCategoryData={setCategoryData} categoryData={categoryData} setSelectedCategory={props.setSelectedCategory} />
+      <CategoryInput setCategoryData={setCategoryData} categoryData={categoryData} userId={props.userData.id} />
+      <CategoryCarousel setCategoryData={setCategoryData} categoryData={categoryData} setSelectedCategory={props.setSelectedCategory} userId={props.userData.id} />
     </div>
   } else {
     categoryMsg = <h3>Loading Categories...</h3>

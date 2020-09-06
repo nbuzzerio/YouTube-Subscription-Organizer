@@ -14,14 +14,25 @@ jest.mock("../components/_getUserCategories", () => {
     };
 });
 
+jest.mock("../components/_postNewCategory", (newCategory) => {
+    return {
+        __esModule: true,
+        default: async (newCategory) => {
+            return {data: ['category A', 'category B', 'category C', 'category D']}
+        }
+    };
+});
+
 describe('CategoryContainer', () => {
 
     let CategoryContainerWrapper;
+    let setSelectedCategory = () => {}
+
     beforeAll(() => {
-        CategoryContainerWrapper = shallow(<CategoryContainer />);
+        CategoryContainerWrapper = shallow(<CategoryContainer setSelectedCategory={setSelectedCategory} userData={{id: '007'}}/>);
     });
 
-    it('renders SignedInContainer', () => {
+    it('renders CategoryContainer', () => {
         expect(CategoryContainerWrapper).toHaveLength(1);
     });
 
@@ -36,7 +47,7 @@ describe('CategoryContainer', () => {
         let mountedCategoryContainerWrapper;
 
         await act(async () => {
-            mountedCategoryContainerWrapper = mount(<CategoryContainer />);
+            mountedCategoryContainerWrapper = mount(<CategoryContainer setSelectedCategory={setSelectedCategory} userData={{id: '007'}}/>);
             expect(mountedCategoryContainerWrapper.find('h3')).toHaveLength(1);
             expect(mountedCategoryContainerWrapper.find('h3').text()).toContain('Loading Categories...');
         });
@@ -51,47 +62,54 @@ describe('CategoryContainer', () => {
 
     it('passes setSelectedCategory down as props to CategoryCarousel', async () => {
         let mountedCategoryContainerWrapper;
-        let setSelectedCategory = () => { }
 
         await act(async () => {
-            mountedCategoryContainerWrapper = mount(<CategoryContainer setSelectedCategory={setSelectedCategory} />);
+            mountedCategoryContainerWrapper = mount(<CategoryContainer setSelectedCategory={setSelectedCategory} userData={{id: '007'}}/>);
         });
         mountedCategoryContainerWrapper.update();
 
         expect(typeof (mountedCategoryContainerWrapper.find(CategoryCarousel).props().setSelectedCategory)).toEqual('function');
-        mountedCategoryContainerWrapper.unmount()
+        mountedCategoryContainerWrapper.unmount();
     });
 
     it('passes setCategoryData down as props to CategoryCarousel & CategoryInput', async () => {
         let mountedCategoryContainerWrapper;
-        let setSelectedCategory = () => { };
 
         await act(async () => {
-            mountedCategoryContainerWrapper = mount(<CategoryContainer setSelectedCategory={setSelectedCategory} />);
+            mountedCategoryContainerWrapper = mount(<CategoryContainer setSelectedCategory={setSelectedCategory} userData={{id: '007'}}/>);
             expect(mountedCategoryContainerWrapper.find(CategoryInput)).toHaveLength(0);
             expect(mountedCategoryContainerWrapper.find(CategoryCarousel)).toHaveLength(0);
         });
         mountedCategoryContainerWrapper.update();
 
-        expect(mountedCategoryContainerWrapper.find(CategoryInput)).toHaveLength(1);
-        expect(mountedCategoryContainerWrapper.find(CategoryCarousel)).toHaveLength(1);
-
-        mountedCategoryContainerWrapper.update();
-
         expect(typeof mountedCategoryContainerWrapper.find(CategoryCarousel).props().setCategoryData).toEqual('function');
         expect(typeof (mountedCategoryContainerWrapper.find(CategoryInput).props().setCategoryData)).toEqual('function');
-        mountedCategoryContainerWrapper.unmount()
+        mountedCategoryContainerWrapper.unmount();
     });
 
-    it('passes categoryData down as props to CategoryCarousel', async () => {
+    it('passes categoryData down as props to CategoryCarousel & CategoryInput', async () => {
         let mountedCategoryContainerWrapper;
-        let setSelectedCategory = () => { }
 
         await act(async () => {
-            mountedCategoryContainerWrapper = mount(<CategoryContainer setSelectedCategory={setSelectedCategory} />);
+            mountedCategoryContainerWrapper = mount(<CategoryContainer setSelectedCategory={setSelectedCategory} userData={{id: '007'}}/>);
         });
         mountedCategoryContainerWrapper.update();
 
         expect(mountedCategoryContainerWrapper.find(CategoryCarousel).props().categoryData).toEqual(expect.arrayContaining(['category A', 'category B', 'category C']));
+        expect(mountedCategoryContainerWrapper.find(CategoryInput).props().categoryData).toEqual(expect.arrayContaining(['category A', 'category B', 'category C']));
+        mountedCategoryContainerWrapper.unmount();
+    });
+
+    it('passes userId down as props to CategoryCarousel & CategoryInput', async () => {
+        let mountedCategoryContainerWrapper;
+
+        await act(async () => {
+            mountedCategoryContainerWrapper = mount(<CategoryContainer setSelectedCategory={setSelectedCategory} userData={{id: '007'}}/>);
+        });
+        mountedCategoryContainerWrapper.update();
+
+        expect(mountedCategoryContainerWrapper.find(CategoryCarousel).props().userId).toEqual('007');
+        expect(mountedCategoryContainerWrapper.find(CategoryInput).props().userId).toEqual('007');
+        mountedCategoryContainerWrapper.unmount();
     });
 });

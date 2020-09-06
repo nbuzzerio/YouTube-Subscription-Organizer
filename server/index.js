@@ -1,7 +1,8 @@
 const express = require('express');
-const path = require('path');
 require('dotenv').config();
 const app = express();
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 //////////////////////////////////////////////////////
 //                    DATABASE                      //
@@ -9,12 +10,12 @@ const app = express();
 const db = require('../database/index.js');
 const models = require('../database/models.js');
 db.authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch((error) => {
-    console.error('Unable to connect to the database: ', error);
-  });
+.then(() => {
+  console.log('Connection has been established successfully.');
+})
+.catch((error) => {
+  console.error('Unable to connect to the database: ', error);
+});
 //////////////////////////////////////////////////////
 //////////////////////////////////////////////////////
 
@@ -22,7 +23,6 @@ const CONFIG = require('../config/youtube.config.js');
 
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
-
 
 const { google } = require('googleapis');
 const { oauth2 } = require('googleapis/build/src/apis/oauth2');
@@ -42,7 +42,7 @@ app.get('/googleAuth', (req, res) => {
   const loginLink = oauth2client.generateAuthUrl({
     access_type: 'offline',
     scope: CONFIG.oauth2Credentials.scopes
-  })
+  });
   res.send(loginLink);
 });
 
@@ -174,13 +174,70 @@ app.get('/getUserCategories', (req, res) => {
         }]
       })
         .then((response) => {
-          res.send(response[0]);
+          res.send(response);
         })
         .catch(err => {
           console.log('err logging in:', err)
         })
     });
 
+});
+
+app.post('/postNewCategory', (req, res) => {
+
+  if (!req.cookies.accessToken) {
+    return res.redirect('/');
+  }
+
+  const oauth2client = new OAuth2(
+    CONFIG.oauth2Credentials.client_id,
+    CONFIG.oauth2Credentials.client_secret,
+    CONFIG.oauth2Credentials.redirect_uris[0],
+  );
+
+  oauth2client.credentials = jwt.verify(req.cookies.accessToken, CONFIG.ACCESS_TOKEN_SECRET);
+
+  const category = req.body;
+    console.log(category)
+  db.sync()
+    .then(() => {
+      models.Category.findOrCreate({
+          where: {
+            Category_Name: category.newCategory,
+            UserUserId: category.userId
+        },
+        defaults: {
+          Category_Name: category.newCategory,
+          UserUserId: category.userId
+        }
+      })
+      .then((response) => {
+        console.log('success resonse: ', response.dataValues)
+        models.Category.findAll({
+          include: [{
+            model: models.User,
+            where: {
+              User_Id: category.userId
+            },
+          }]
+        })
+          .then((response) => {
+            res.send(response);
+          })
+          .catch(err => {
+            console.log('err logging in:', err)
+            res.sendStatus(409);
+          })
+      })
+      .catch(err => {
+        console.log('Error retrieving category:', err)
+        res.sendStatus(409);
+      })
+    .catch(err => {
+      console.log('Error creating category:', err)
+      res.sendStatus(409);
+    })
+    });
 });
 
 app.listen(CONFIG.port, () => {
