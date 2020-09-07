@@ -5,7 +5,7 @@ function ChosenCategory(props) {
 
     return (
         <div>
-            <h3>Chosen Category PlaceHolder</h3>
+            <h3>Chosen Category {props.categoryInfo.category}</h3>
             <VideoList />
         </div>
     )

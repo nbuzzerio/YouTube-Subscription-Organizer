@@ -70,7 +70,7 @@ describe('SignedInContainer', () => {
         expect(mountedSignedInContainerWrapper.find(SubContainer)).toHaveLength(1);
         expect(mountedSignedInContainerWrapper.find(NewChannelContainer)).toHaveLength(1);
         expect(mountedSignedInContainerWrapper.find(CategoryContainer).props().userData.given_name).toEqual('TestName');
-        expect(typeof (mountedSignedInContainerWrapper.find(CategoryContainer).props().setSelectedCategory)).toEqual('function');
+        expect(typeof ((mountedSignedInContainerWrapper.find(CategoryContainer).props()).setSelectedCategory)).toEqual('function');
         mountedSignedInContainerWrapper.unmount()
     });
 

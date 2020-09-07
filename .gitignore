@@ -10,3 +10,5 @@ package-lock.json
 notes.jsx
 
 coverage
+
+__mocks__

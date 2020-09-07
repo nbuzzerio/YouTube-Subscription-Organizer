@@ -46,14 +46,16 @@ function CategoryInput(props) {
   }
 
   return (
-    <form onSubmit={handleCreate}>
-      <label>
-        New Category:
+    <div className='categoryInput'>
+      <form onSubmit={handleCreate}>
+        <label>
+          New Category:
             <input type="text" value={text} onChange={handleChange} />
-      </label>
-      {inputError}
-      <input type="submit" value="Submit" />
-    </form>
+        </label>
+        {inputError}
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
   );
 
 }

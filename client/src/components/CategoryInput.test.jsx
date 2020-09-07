@@ -38,7 +38,6 @@ describe('CategoryInput', () => {
         //another async to handle the form submit
         async () => {
             await act(async () => {
-                console.log(1)
                 mountedCategoryInputWrapper = mount(<CategoryInput setCategoryData={setCategoryData} categoryData={[{ Category_Name: 'category A' }, { Category_Name: 'category B' }, { Category_Name: 'category C' }]} userId={'007'} />);
             });
 

@@ -29,7 +29,7 @@ function SignedInContainer() {
   let display;
   if (userData && selectedCategory) {
     display = <div>
-      <ChosenCategory />
+      <ChosenCategory categoryInfo={selectedCategory}/>
     </div>
   } else if (userData && !selectedCategory) {
     display = <div>

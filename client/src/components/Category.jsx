@@ -2,10 +2,16 @@ import React, { useState, useEffect } from 'react';
 
 function Category(props) {
 
+    const handleClick = (e) => {
+        let categoryInfo = {
+            category: props.category,
+            categoryId: props.categoryId
+        }
+        props.setSelectedCategory(categoryInfo)
+    }
+ 
     return (
-        <div>
-            <h5>Category Node PlaceHolder</h5>
-        </div>
+        <div className='category' onClick={handleClick}>{props.category}</div>
     )
 
 }

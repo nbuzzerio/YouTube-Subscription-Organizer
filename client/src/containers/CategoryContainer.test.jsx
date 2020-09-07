@@ -68,7 +68,7 @@ describe('CategoryContainer', () => {
         });
         mountedCategoryContainerWrapper.update();
 
-        expect(typeof (mountedCategoryContainerWrapper.find(CategoryCarousel).props().setSelectedCategory)).toEqual('function');
+        expect(typeof ((mountedCategoryContainerWrapper.find(CategoryCarousel).props()).setSelectedCategory)).toEqual('function');
         mountedCategoryContainerWrapper.unmount();
     });
 
@@ -82,8 +82,8 @@ describe('CategoryContainer', () => {
         });
         mountedCategoryContainerWrapper.update();
 
-        expect(typeof mountedCategoryContainerWrapper.find(CategoryCarousel).props().setCategoryData).toEqual('function');
-        expect(typeof (mountedCategoryContainerWrapper.find(CategoryInput).props().setCategoryData)).toEqual('function');
+        expect(typeof ((mountedCategoryContainerWrapper.find(CategoryCarousel).props()).setCategoryData)).toEqual('function');
+        expect(typeof ((mountedCategoryContainerWrapper.find(CategoryInput).props()).setCategoryData)).toEqual('function');
         mountedCategoryContainerWrapper.unmount();
     });
 
