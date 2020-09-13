@@ -10,12 +10,13 @@ app.use(express.json());
 const db = require('../database/index.js');
 const models = require('../database/models.js');
 db.authenticate()
-.then(() => {
-  console.log('Connection has been established successfully.');
-})
-.catch((error) => {
-  console.error('Unable to connect to the database: ', error);
-});
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch((error) => {
+    console.error('Unable to connect to the database: ', error);
+  });
+db.sync();
 //////////////////////////////////////////////////////
 //////////////////////////////////////////////////////
 
@@ -61,22 +62,21 @@ app.get('/OAuth', (req, res) => {
   } else {
     oauth2client.getToken(req.query.code, (err, token) => {
       if (err) {
-        return res.redirect('/')
+        return res.redirect('/');
       }
       const accessToken = jwt.sign(token, CONFIG.ACCESS_TOKEN_SECRET);
 
       // res.redirect({accessToken: accessToken}, '/');
-      res.cookie('accessToken', accessToken)
+      res.cookie('accessToken', accessToken);
       return res.redirect('/');
     });
-  }
+  };
 });
 
-app.get('/subscription_organizer', (req, res) => {
-  console.log('Do we arrive here?')
+app.get('/updateSubs', (req, res) => {
   if (!req.cookies.accessToken) {
     return res.redirect('/')
-  }
+  };
 
   const oauth2client = new OAuth2(
     CONFIG.oauth2Credentials.client_id,
@@ -88,102 +88,96 @@ app.get('/subscription_organizer', (req, res) => {
 
   const youtube = google.youtube('v3');
 
-  youtube.subscriptions.list({
-    auth: oauth2client,
-    mine: true,
-    part: 'snippet, contentDetails',
-    maxResults: 50
-  })
-    .then((response) => {
-      console.log(response)
+  let subs = [];
+  let params;
+  let nextPageToken;
+  let userId = req.query.user;
 
-      return res.send({ subscriptions: response.data.items })
-    });
+  const getAllData = async () => {
+    if (subs.length === 0) {
+      params = {
+        auth: oauth2client,
+        mine: true,
+        part: 'snippet, contentDetails',
+        maxResults: 50
+      };
+    } else {
+      params = {
+        auth: oauth2client,
+        mine: true,
+        part: 'snippet, contentDetails',
+        maxResults: 50,
+        pageToken: nextPageToken
+      };
+    };
 
+    await youtube.subscriptions.list(params)
+      .then((response) => {
+        subs = subs.concat(response.data.items);
+        if (response.data.nextPageToken) {
+          nextPageToken = response.data.nextPageToken;
+          getAllData();
+        } else {
+
+          let channelsData = subs.map((sub) => {
+            return ({
+              Channel_Id: sub.snippet.resourceId.channelId,
+              Channel_Name: sub.snippet.title,
+              Channel_URL: `https://www.youtube.com/channel/${sub.snippet.resourceId.channelId}/`,
+              default_img_URL: sub.snippet.thumbnails.default.url,
+              medium_img_URL: sub.snippet.thumbnails.medium.url,
+              high_img_URL: sub.snippet.thumbnails.high.url,
+              Channel_Description: sub.snippet.description,
+              Total_Videos: sub.contentDetails.totalItemCount
+            });
+          });
+          let subscriptionsData = subs.map((sub) => {
+            return ({
+              Subscription_Id: `${userId}_${sub.snippet.resourceId.channelId}`,
+              UserUserId: userId,
+              ChannelChannelId: sub.snippet.resourceId.channelId,
+            });
+          });
+          models.Channel.bulkCreate(channelsData, {
+            updateOnDuplicate: [
+              'Channel_Name',
+              'Channel_URL',
+              'default_img_URL',
+              'medium_img_URL',
+              'high_img_URL',
+              'Channel_Description',
+              'Total_Videos',
+              'updatedAt',
+            ]
+          })
+            .then((response) => {
+              models.Subscription.bulkCreate(subscriptionsData, {
+                updateOnDuplicate: [
+                  'Subscription_Id',
+                  'UserUserId',
+                  'ChannelChannelId',
+                ]
+              })
+                .then((response) => {
+                  res.send({ subscriptions: subs });
+                })
+                .catch(err => {
+                  console.log('Error updating Subscriptions:', err);
+                });
+            })
+            .catch(err => {
+              console.log('Error updating Channels:', err);
+            });
+        };
+      })
+      .catch((err) => {
+        console.log('Error getting subs from API: ', err);
+      });
+  };
+  getAllData();
 });
 
 app.get('/googleUserInfo', (req, res) => {
-
-  if (!req.cookies.accessToken) {
-    return res.redirect('/')
-  }
-
-  const oauth2client = new OAuth2(
-    CONFIG.oauth2Credentials.client_id,
-    CONFIG.oauth2Credentials.client_secret,
-    CONFIG.oauth2Credentials.redirect_uris[0],
-  );
-
-  oauth2client.credentials = jwt.verify(req.cookies.accessToken, CONFIG.ACCESS_TOKEN_SECRET);
-
-  const oauth2 = google.oauth2('v2')
-
-  oauth2.userinfo.get({
-    auth: oauth2client
-  })
-    .then((response) => {
-      let userData = response.data
-      // create a new row for this user in the table
-      db.sync()
-        .then(() => {
-          models.User.findOrCreate({
-            where: {
-              User_Id: userData.id
-            },
-            defaults: {
-              User_Id: userData.id,
-              Email: userData.email,
-              Name: userData.given_name
-            }
-          })
-            .then((response) => {
-              //send info to client only once it is saved
-              res.send(userData);
-            })
-            .catch(err => {
-              console.log('err logging in:', err)
-            })
-        })
-    });
-
-});
-
-app.get('/getUserCategories', (req, res) => {
-
-  if (!req.cookies.accessToken) {
-    return res.redirect('/')
-  }
-
-  const oauth2client = new OAuth2(
-    CONFIG.oauth2Credentials.client_id,
-    CONFIG.oauth2Credentials.client_secret,
-    CONFIG.oauth2Credentials.redirect_uris[0],
-  );
-
-  oauth2client.credentials = jwt.verify(req.cookies.accessToken, CONFIG.ACCESS_TOKEN_SECRET);
-
-  let userId = req.query.user;
-  db.sync()
-    .then(() => {
-      models.Category.findAll({
-        include: [{
-          model: models.User,
-          where: {
-            User_Id: userId
-          },
-        }]
-      })
-        .then((response) => {
-          res.send(response);
-        })
-        .catch(err => {
-          console.log('err logging in:', err)
-        })
-    });
-
-});
-
-app.post('/postNewCategory', (req, res) => {
 
   if (!req.cookies.accessToken) {
     return res.redirect('/');
@@ -197,46 +191,110 @@ app.post('/postNewCategory', (req, res) => {
 
   oauth2client.credentials = jwt.verify(req.cookies.accessToken, CONFIG.ACCESS_TOKEN_SECRET);
 
-  const category = req.body;
-    console.log(category)
-  db.sync()
-    .then(() => {
-      models.Category.findOrCreate({
-          where: {
-            Category_Name: category.newCategory,
-            UserUserId: category.userId
+  const oauth2 = google.oauth2('v2');
+
+  oauth2.userinfo.get({
+    auth: oauth2client
+  })
+    .then((response) => {
+      let userData = response.data
+      models.User.findOrCreate({
+        where: {
+          User_Id: userData.id
         },
         defaults: {
-          Category_Name: category.newCategory,
-          UserUserId: category.userId
+          User_Id: userData.id,
+          Email: userData.email,
+          Name: userData.given_name
         }
       })
-      .then((response) => {
-        console.log('success resonse: ', response.dataValues)
-        models.Category.findAll({
-          include: [{
-            model: models.User,
-            where: {
-              User_Id: category.userId
-            },
-          }]
+        .then((response) => {
+          //send info to client only once it is saved
+          res.send(userData);
         })
-          .then((response) => {
-            res.send(response);
-          })
-          .catch(err => {
-            console.log('err logging in:', err)
-            res.sendStatus(409);
-          })
+        .catch(err => {
+          console.log('Error creating User:', err);
+        });
+    });
+});
+
+app.get('/getUserCategories', (req, res) => {
+
+  if (!req.cookies.accessToken) {
+    return res.redirect('/');
+  };
+
+  const oauth2client = new OAuth2(
+    CONFIG.oauth2Credentials.client_id,
+    CONFIG.oauth2Credentials.client_secret,
+    CONFIG.oauth2Credentials.redirect_uris[0],
+  );
+
+  oauth2client.credentials = jwt.verify(req.cookies.accessToken, CONFIG.ACCESS_TOKEN_SECRET);
+
+  let userId = req.query.user;
+
+  models.Category.findAll({
+    include: [{
+      model: models.User,
+      where: {
+        User_Id: userId
+      },
+    }]
+  })
+    .then((response) => {
+      res.send(response);
+    })
+    .catch(err => {
+      console.log('Error finding User Categories:', err)
+    });
+});
+
+app.post('/postNewCategory', (req, res) => {
+
+  if (!req.cookies.accessToken) {
+    return res.redirect('/');
+  };
+
+  const oauth2client = new OAuth2(
+    CONFIG.oauth2Credentials.client_id,
+    CONFIG.oauth2Credentials.client_secret,
+    CONFIG.oauth2Credentials.redirect_uris[0],
+  );
+
+  oauth2client.credentials = jwt.verify(req.cookies.accessToken, CONFIG.ACCESS_TOKEN_SECRET);
+
+  const category = req.body;
+  models.Category.findOrCreate({
+    where: {
+      Category_Name: category.newCategory,
+      UserUserId: category.userId
+    },
+    defaults: {
+      Category_Name: category.newCategory,
+      UserUserId: category.userId
+    }
+  })
+    .then((response) => {
+      models.Category.findAll({
+        include: [{
+          model: models.User,
+          where: {
+            User_Id: category.userId
+          },
+        }]
       })
-      .catch(err => {
-        console.log('Error retrieving category:', err)
-        res.sendStatus(409);
-      })
+        .then((response) => {
+          res.send(response);
+        })
+        .catch(err => {
+          console.log('Error getting User Categories', err)
+          res.sendStatus(409);
+        })
+    })
     .catch(err => {
       console.log('Error creating category:', err)
       res.sendStatus(409);
-    })
     });
 });
 

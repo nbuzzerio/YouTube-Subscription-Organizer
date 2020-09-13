@@ -1,7 +1,12 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const db = require('./index.js');
 
-const Subscription = db.define('Subscription', {})
+const Subscription = db.define('Subscription', {
+    Subscription_Id: {
+        type: DataTypes.STRING,
+        primaryKey: true
+    },
+});
 
 const Channel = db.define('Channel', {
     Channel_Id: {
