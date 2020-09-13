@@ -8,7 +8,7 @@ const getUpdatedUserSubs = async (userId) => {
       user: userId
     }
   })
-    .then(res => res.data.subscriptions)
+    .then(res => res.data)
     .catch(err => { throw err });
 };
 

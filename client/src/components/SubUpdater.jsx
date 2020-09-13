@@ -6,7 +6,6 @@ function SubUpdater(props) {
     const updateSubs = () => {
         getUpdatedUserSubs(props.userId)
             .then(userSubs => {
-                console.log(userSubs)
                 props.setSubs(userSubs);
             })
             .catch(function (error) {

@@ -73,6 +73,37 @@ app.get('/OAuth', (req, res) => {
   };
 });
 
+app.get('/getSubs', (req, res) => {
+  if (!req.cookies.accessToken) {
+    return res.redirect('/')
+  };
+
+  const oauth2client = new OAuth2(
+    CONFIG.oauth2Credentials.client_id,
+    CONFIG.oauth2Credentials.client_secret,
+    CONFIG.oauth2Credentials.redirect_uris[0],
+  );
+
+  oauth2client.credentials = jwt.verify(req.cookies.accessToken, CONFIG.ACCESS_TOKEN_SECRET);
+
+  let userId = req.query.user;
+
+  models.Channel.findAll({
+    include: [{
+      model: models.Subscription,
+      where: {
+        UserUserId: userId
+      },
+    }]
+  })
+    .then((response) => {
+      res.send(response);
+    })
+    .catch(err => {
+      console.log('Error finding User Subscriptions:', err)
+    });
+});
+
 app.get('/updateSubs', (req, res) => {
   if (!req.cookies.accessToken) {
     return res.redirect('/')
@@ -159,7 +190,20 @@ app.get('/updateSubs', (req, res) => {
                 ]
               })
                 .then((response) => {
-                  res.send({ subscriptions: subs });
+                  models.Channel.findAll({
+                    include: [{
+                      model: models.Subscription,
+                      where: {
+                        UserUserId: userId
+                      },
+                    }]
+                  })
+                    .then((response) => {
+                      res.send(response);
+                    })
+                    .catch(err => {
+                      console.log('Error finding User Subscriptions:', err)
+                    });
                 })
                 .catch(err => {
                   console.log('Error updating Subscriptions:', err);
