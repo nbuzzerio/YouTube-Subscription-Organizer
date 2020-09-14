@@ -5,11 +5,18 @@ import SubUpdater from '../components/SubUpdater.jsx';
 import SubCarousel from '../components/SubCarousel.jsx';
 import { act } from 'react-dom/test-utils';
 
+jest.mock("../components/_getUserSubs.js", (user) => {
+    return {
+        __esModule: true,
+        default: async (user) => ['A', 'List', 'Of', 'Subs']
+    };
+});
+
 describe('SubContainer', () => {
 
     let subContainerWrapper;
     beforeAll(() => {
-        subContainerWrapper = shallow(<SubContainer />);
+        subContainerWrapper = shallow(<SubContainer userData={{ id: 'testID' }} />);
     });
 
     it('renders SubContainer', () => {
@@ -23,25 +30,24 @@ describe('SubContainer', () => {
         expect(subContainerWrapper.find(SubCarousel)).toHaveLength(1);
     });
 
-    it('should pass subs to SubCarousel', async () => {
+    it('should setSubs on load and pass subs to SubCarousel', async () => {
         let mountedSubContainerWrapper;
-        let subs = 'sub';
-
         await act(async () => {
-            mountedSubContainerWrapper = mount(<SubContainer />);
+            mountedSubContainerWrapper = mount(<SubContainer userData={{ id: 'testID' }} />);
         })
         mountedSubContainerWrapper.update();
 
         expect(mountedSubContainerWrapper.find(SubCarousel)).toHaveLength(1);
-        expect(mountedSubContainerWrapper.find(SubCarousel).props().subs).toEqual(null);
+        expect(mountedSubContainerWrapper.find(SubCarousel).props().subs).toEqual(['A', 'List', 'Of', 'Subs']);
         mountedSubContainerWrapper.unmount();
-    });
+
+    })
 
     it('should pass setSubs to SubUpdater', async () => {
         let mountedSubContainerWrapper;
 
         await act(async () => {
-            mountedSubContainerWrapper = mount(<SubContainer />);
+            mountedSubContainerWrapper = mount(<SubContainer userData={{ id: 'testID' }} />);
         })
         mountedSubContainerWrapper.update();
 

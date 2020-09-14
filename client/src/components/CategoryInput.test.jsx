@@ -36,29 +36,27 @@ describe('CategoryInput', () => {
     it('renders an error in a <p> in the form if the category already exists', async () => {
         let mountedCategoryInputWrapper;
         //another async to handle the form submit
-        async () => {
-            await act(async () => {
-                mountedCategoryInputWrapper = mount(<CategoryInput setCategoryData={setCategoryData} categoryData={[{ Category_Name: 'category A' }, { Category_Name: 'category B' }, { Category_Name: 'category C' }]} userId={'007'} />);
-            });
+        await act(async () => {
+            mountedCategoryInputWrapper = mount(<CategoryInput setCategoryData={setCategoryData} categoryData={[{ Category_Name: 'category A' }, { Category_Name: 'category B' }, { Category_Name: 'category C' }]} userId={'007'} />);
+        });
 
-            //set textfield to 'category C'
-            const inputText = mountedCategoryInputWrapper.find('input[type="text"]');
-            const event = {
-                target: {
-                    value: 'category C'
-                }
+        //set textfield to 'category C'
+        const inputText = mountedCategoryInputWrapper.find('input[type="text"]');
+        const event = {
+            target: {
+                value: 'category C'
             }
-            await inputText.simulate('change', event);
-
-            //submit duplicate category
-            const inputSubmit = mountedCategoryInputWrapper.find('input[type="submit"]');
-            inputSubmit.simulate('submit');
-
-            expect(CategoryInputWrapper.find('form')).toHaveLength(1);
-            expect(CategoryInputWrapper.find('p')).toHaveLength(1);
-            expect(CategoryInputWrapper.find('p').text()).toEqual('Error: You already have that category!');
-            mountedCategoryInputWrapper.unmount();
         }
+        inputText.simulate('change', event);
+
+        //submit duplicate category
+        const inputSubmit = mountedCategoryInputWrapper.find('input[type="submit"]');
+        inputSubmit.simulate('submit');
+
+        expect(mountedCategoryInputWrapper.find('form')).toHaveLength(1);
+        expect(mountedCategoryInputWrapper.find('p')).toHaveLength(1);
+        expect(mountedCategoryInputWrapper.find('p').text()).toEqual('You already have that category!');
+        mountedCategoryInputWrapper.unmount();
     });
 
 });
