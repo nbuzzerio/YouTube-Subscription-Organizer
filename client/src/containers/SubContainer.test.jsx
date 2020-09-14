@@ -8,14 +8,14 @@ import { act } from 'react-dom/test-utils';
 jest.mock("../components/_getUserSubs.js", (user) => {
     return {
         __esModule: true,
-        default: async (user) => ['A', 'List', 'Of', 'Subs']
+        default: async (user) => [{Channel_Name: "A", Channel_Description: "A"}, {Channel_Name: "List", Channel_Description: "List"}, {Channel_Name: "Of", Channel_Description: "Of"}, {Channel_Name: "Subs", Channel_Description: "Subs"}]
     };
 });
 
 jest.mock("../components/_getUpdatedUserSubs.js", (user) => {
     return {
         __esModule: true,
-        default: async (user) => ['An', 'Updated', 'List', 'Of', 'Subs']
+        default: async (user) => [{Channel_Name: "A", Channel_Description: "An"}, {Channel_Name: "Updated", Channel_Description: "Updated"}, {Channel_Name: "List", Channel_Description: "List"}, {Channel_Name: "Of", Channel_Description: "Of"}, {Channel_Name: "Subs", Channel_Description: "Subs"}]
     };
 });
 
@@ -45,7 +45,7 @@ describe('SubContainer', () => {
         mountedSubContainerWrapper.update();
 
         expect(mountedSubContainerWrapper.find(SubCarousel)).toHaveLength(1);
-        expect(mountedSubContainerWrapper.find(SubCarousel).props().subs).toEqual(['A', 'List', 'Of', 'Subs']);
+        expect(mountedSubContainerWrapper.find(SubCarousel).props().subs).toEqual([{Channel_Name: "A", Channel_Description: "A"}, {Channel_Name: "List", Channel_Description: "List"}, {Channel_Name: "Of", Channel_Description: "Of"}, {Channel_Name: "Subs", Channel_Description: "Subs"}]);
         mountedSubContainerWrapper.unmount();
 
     })
@@ -71,7 +71,7 @@ describe('SubContainer', () => {
         mountedSubContainerWrapper.update();
 
         expect(mountedSubContainerWrapper.find(SubCarousel)).toHaveLength(1);
-        expect(mountedSubContainerWrapper.find(SubCarousel).props().subs).toEqual(['A', 'List', 'Of', 'Subs']);
+        expect(mountedSubContainerWrapper.find(SubCarousel).props().subs).toEqual([{Channel_Name: "A", Channel_Description: "A"}, {Channel_Name: "List", Channel_Description: "List"}, {Channel_Name: "Of", Channel_Description: "Of"}, {Channel_Name: "Subs", Channel_Description: "Subs"}]);
 
         const subUpdateBtn = mountedSubContainerWrapper.find(SubUpdater).find('button');
 
@@ -80,7 +80,7 @@ describe('SubContainer', () => {
         })
         mountedSubContainerWrapper.update();
 
-        expect(mountedSubContainerWrapper.find(SubCarousel).props().subs).toEqual(['An', 'Updated', 'List', 'Of', 'Subs']);
+        expect(mountedSubContainerWrapper.find(SubCarousel).props().subs).toEqual([{Channel_Name: "A", Channel_Description: "An"}, {Channel_Name: "Updated", Channel_Description: "Updated"}, {Channel_Name: "List", Channel_Description: "List"}, {Channel_Name: "Of", Channel_Description: "Of"}, {Channel_Name: "Subs", Channel_Description: "Subs"}]);
         mountedSubContainerWrapper.unmount();
 
     });
