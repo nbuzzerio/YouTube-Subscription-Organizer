@@ -12,6 +12,13 @@ jest.mock("../components/_getUserSubs.js", (user) => {
     };
 });
 
+jest.mock("../components/_getUpdatedUserSubs.js", (user) => {
+    return {
+        __esModule: true,
+        default: async (user) => ['An', 'Updated', 'List', 'Of', 'Subs']
+    };
+});
+
 describe('SubContainer', () => {
 
     let subContainerWrapper;
@@ -48,12 +55,34 @@ describe('SubContainer', () => {
 
         await act(async () => {
             mountedSubContainerWrapper = mount(<SubContainer userData={{ id: 'testID' }} />);
-        })
+        });
         mountedSubContainerWrapper.update();
 
         expect(mountedSubContainerWrapper.find(SubUpdater)).toHaveLength(1);
         expect(typeof ((mountedSubContainerWrapper.find(SubUpdater).props()).setSubs)).toEqual('function');
         mountedSubContainerWrapper.unmount();
+    });
+
+    it('should setSubs when Update Subs button is clicked in SubUpdater', async () => {
+        let mountedSubContainerWrapper;
+        await act(async () => {
+            mountedSubContainerWrapper = mount(<SubContainer userData={{ id: 'testId' }} />);
+        });
+        mountedSubContainerWrapper.update();
+
+        expect(mountedSubContainerWrapper.find(SubCarousel)).toHaveLength(1);
+        expect(mountedSubContainerWrapper.find(SubCarousel).props().subs).toEqual(['A', 'List', 'Of', 'Subs']);
+
+        const subUpdateBtn = mountedSubContainerWrapper.find(SubUpdater).find('button');
+
+        await act(async () => {
+            subUpdateBtn.simulate('click');
+        })
+        mountedSubContainerWrapper.update();
+
+        expect(mountedSubContainerWrapper.find(SubCarousel).props().subs).toEqual(['An', 'Updated', 'List', 'Of', 'Subs']);
+        mountedSubContainerWrapper.unmount();
+
     });
 
 });
