@@ -1,0 +1,96 @@
+.subContainer {
+    background-color: #fff;
+    border: 1px solid gray;
+    border-radius: 5px 5px 0 0;
+    margin: 5%;
+
+    -webkit-box-shadow: -1px 1px 3px -1px rgba(0,0,0,0.75);
+    -moz-box-shadow: -1px 1px 3px -1px rgba(0,0,0,0.75);
+    box-shadow: -1px 1px 3px -1px rgba(0,0,0,0.75);
+}
+
+.subTitleBar {
+    margin: 5%;
+    display: flex;
+    justify-content: center;
+}
+
+.subContainerTitle {
+    color: red;
+    font-size: 80px;
+    text-shadow: 4px 3px 9px gray;
+}
+
+.subUpdater {
+    color: red;
+    font-size: 80px;
+}
+
+.subUpdaterBtn {
+    margin: 25px;
+    margin-left: 55px;
+    background-color: red;
+    border: 1px solid gray;
+    color: white;
+    border-radius: 11%;
+    box-sizing: border-box;
+    height: 50px;
+    width: 125px;
+    font-size: 15px;
+    text-align: center;
+    cursor: pointer;
+
+    -webkit-box-shadow: -1px 1px 3px -1px rgba(0,0,0,0.75);
+    -moz-box-shadow: -1px 1px 3px -1px rgba(0,0,0,0.75);
+    box-shadow: -1px 1px 3px -1px rgba(0,0,0,0.75);
+}
+
+.subUpdaterBtn:active {
+    background-color: #cc0000;
+}
+
+.subUpdaterBtnTxt {
+    position: relative;
+    top: 20%;
+    width: 100%;
+    transform: translateY(-50%);
+}
+
+.subCarousel {
+    margin: auto;
+}
+
+.subsWrapper {
+    margin: 5%;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    justify-content: center;
+}
+
+.subTitle {
+    margin: auto;
+}
+
+.singleSubContainer {
+    margin: auto;
+    box-sizing: border-box;
+    height: 150px;
+    width: 100px;
+    text-align: center;
+}
+
+.filterWrapper {
+    margin: 5%;
+    display: flex;
+    justify-content: center;
+    color: red;
+    font-size: 28px;
+    text-shadow: 4px 3px 9px gray;
+}
+
+.filterSearch {
+    width: 500px;
+    margin: 10px;
+    padding: 5px;
+    font-size: 24px;
+}

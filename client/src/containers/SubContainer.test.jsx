@@ -31,8 +31,8 @@ describe('SubContainer', () => {
     });
 
     it('renders "SubContainer Placeholder"', () => {
-        expect(subContainerWrapper.find('h3')).toHaveLength(1);
-        expect(subContainerWrapper.find('h3').text()).toContain('SubContainer PlaceHolder');
+        expect(subContainerWrapper.find('div.subContainerTitle')).toHaveLength(1);
+        expect(subContainerWrapper.find('div.subContainerTitle').text()).toContain('Your Subscriptions');
         expect(subContainerWrapper.find(SubUpdater)).toHaveLength(1);
         expect(subContainerWrapper.find(SubCarousel)).toHaveLength(1);
     });
@@ -73,7 +73,7 @@ describe('SubContainer', () => {
         expect(mountedSubContainerWrapper.find(SubCarousel)).toHaveLength(1);
         expect(mountedSubContainerWrapper.find(SubCarousel).props().subs).toEqual([{Channel_Name: "A", Channel_Description: "A"}, {Channel_Name: "List", Channel_Description: "List"}, {Channel_Name: "Of", Channel_Description: "Of"}, {Channel_Name: "Subs", Channel_Description: "Subs"}]);
 
-        const subUpdateBtn = mountedSubContainerWrapper.find(SubUpdater).find('button');
+        const subUpdateBtn = mountedSubContainerWrapper.find(SubUpdater).find('div.subUpdaterBtn');
 
         await act(async () => {
             subUpdateBtn.simulate('click');

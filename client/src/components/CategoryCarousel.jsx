@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Category from '../components/Category.jsx';
-import './CategoryCarousel.css'
 
 function CategoryCarousel(props) {
   let categories = props.categoryData;

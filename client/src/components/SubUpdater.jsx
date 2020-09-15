@@ -19,9 +19,10 @@ function SubUpdater(props) {
     };
 
     return (
-        <div>
-            <h4>SubUpdater PlaceHolder</h4>
-            <button onClick={updateSubs}>Update Subscriptions</button>
+        <div className='subUpdater'>
+            <div className='subUpdaterBtn' onClick={updateSubs}>
+                <p className='subUpdaterBtnTxt'>Update Subscriptions</p>
+            </div>
         </div>
     );
 

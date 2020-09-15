@@ -14,10 +14,11 @@ function SubCarousel({ subs }) {
     let listsubs = filteredList.map((sub, i) => <Sub sub={sub} key={i} />);
 
     return (
-        <div>
-            <h4>SubCarousel PlaceHolder</h4>
+        <div className='subCarousel'>
+            <div className='subsWrapper'>
+                {listsubs}
+            </div>
             <SubFilter setFilter={setFilter} />
-            {listsubs}
         </div>
     );
 };

@@ -20,14 +20,11 @@ describe('SubUpdater', () => {
         expect(subUpdaterWrapper).toHaveLength(1);
     });
 
-    it('renders "SubUpdater Placeholder"', () => {
-        expect(subUpdaterWrapper.find('h4')).toHaveLength(1);
-        expect(subUpdaterWrapper.find('h4').text()).toContain('SubUpdater PlaceHolder');
-    });
-
     it('renders a button to Update Subscriptions', () => {
-        expect(subUpdaterWrapper.find('button')).toHaveLength(1);
-        expect(subUpdaterWrapper.find('button').text()).toContain('Update Subscriptions');
+        expect(subUpdaterWrapper.find('div.subUpdaterBtn')).toHaveLength(1);
+        expect(subUpdaterWrapper.find('p.subUpdaterBtnTxt')).toHaveLength(1);
+
+        expect(subUpdaterWrapper.find('p.subUpdaterBtnTxt').text()).toContain('Update Subscriptions');
     });
 
 });

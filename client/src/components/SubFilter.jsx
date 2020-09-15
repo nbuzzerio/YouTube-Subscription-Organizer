@@ -10,11 +10,10 @@ function SubFilter({setFilter}) {
     }
 
     return (
-        <div>
-            <h4>SubFilter PlaceHolder</h4>
+        <div className='filterWrapper'>
             <label>
-            Filter Subs:
-            <input type="text" value={text} onChange={handleChange} />
+            Search:
+            <input className='filterSearch' type="text" value={text} onChange={handleChange} />
         </label>
         </div>
     )

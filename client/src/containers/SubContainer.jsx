@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SubUpdater from '../components/SubUpdater.jsx';
 import SubCarousel from '../components/SubCarousel.jsx';
 import getUserSubs from '../components/_getUserSubs.js';
+import './SubContainer.css'
 
 function SubContainer(props) {
     const [subs, setSubs] = useState([]);
@@ -21,9 +22,11 @@ function SubContainer(props) {
     }, [])
 
     return (
-        <div>
-            <h3>SubContainer PlaceHolder</h3>
-            <SubUpdater setSubs={setSubs} userId={props.userData.id} />
+        <div className='subContainer'>
+            <div className='subTitleBar'>
+                <div className='subContainerTitle'>Your Subscriptions</div>
+                <SubUpdater setSubs={setSubs} userId={props.userData.id} />
+            </div>
             <SubCarousel subs={subs} />
         </div>
     );

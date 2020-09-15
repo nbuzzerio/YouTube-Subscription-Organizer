@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CategoryInput from '../components/CategoryInput.jsx';
 import CategoryCarousel from '../components/CategoryCarousel.jsx';
 import getUserCategories from '../components/_getUserCategories.js';
+import './CategoryContainer.css'
 
 function CategoryContainer(props) {
 

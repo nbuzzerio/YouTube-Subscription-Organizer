@@ -16,11 +16,6 @@ describe('SubCarousel', () => {
         expect(subCarouselWrapper).toHaveLength(1);
     });
 
-    it('renders "SubCarousel Placeholder"', () => {
-        expect(subCarouselWrapper.find('h4')).toHaveLength(1);
-        expect(subCarouselWrapper.find('h4').text()).toContain('SubCarousel PlaceHolder');
-    });
-
     it('renders all the subs passed in when filter is an empty string', () => {
         expect(subCarouselWrapper.find(Sub).length).toEqual(4)
     });
