@@ -43,7 +43,7 @@ describe('CategoryContainer', () => {
         expect(CategoryContainerWrapper.find(CategoryCarousel)).toHaveLength(0);
     });
 
-    it('renders "Select a Category", CategoryInput, & CategoryCarousel after categoryData is set', async () => {
+    it('renders CategoryInput, & CategoryCarousel after categoryData is set', async () => {
         let mountedCategoryContainerWrapper;
 
         await act(async () => {
@@ -55,8 +55,6 @@ describe('CategoryContainer', () => {
 
         expect(mountedCategoryContainerWrapper.find(CategoryInput)).toHaveLength(1);
         expect(mountedCategoryContainerWrapper.find(CategoryCarousel)).toHaveLength(1);
-        expect(mountedCategoryContainerWrapper.find('h3')).toHaveLength(1);
-        expect(mountedCategoryContainerWrapper.find('h3').text()).toContain('Select a Category');
         mountedCategoryContainerWrapper.unmount();
     });
 

@@ -1,0 +1,28 @@
+.app {
+  background-color: #fff;
+  border: 1px solid gray;
+  border-radius: 5px 5px 0 0;
+  margin: 2%;
+  min-width: 1300px;
+
+  -webkit-box-shadow: -1px 1px 3px -1px rgba(0,0,0,0.75);
+  -moz-box-shadow: -1px 1px 3px -1px rgba(0,0,0,0.75);
+  box-shadow: -1px 1px 3px -1px rgba(0,0,0,0.75);
+}
+
+h1 {
+  text-align: center;
+  font-size: 80px;
+  text-shadow: 4px 3px 9px gray;
+  max-width: 1600px;
+  min-width: 1300px;
+}
+
+.signOutBtn {
+  position: relative;
+  float: right;
+  margin: 5%;
+  top: -300px;
+}
+
+

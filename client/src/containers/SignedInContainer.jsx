@@ -4,6 +4,7 @@ import SubContainer from './SubContainer.jsx';
 import NewChannelContainer from './NewChannelContainer.jsx';
 import ChosenCategory from '../components/ChosenCategory.jsx';
 import getGoogleUserInfo from '../components/_getGoogleUserInfo.js';
+import './signedInContainer.css'
 
 function SignedInContainer() {
 
@@ -33,7 +34,7 @@ function SignedInContainer() {
     </div>
   } else if (userData && !selectedCategory) {
     display = <div>
-      <h2>Hello, {userData.given_name}</h2>
+      <h2 className='welcome' >Hello, {userData.given_name}</h2>
       <CategoryContainer userData={userData} setSelectedCategory={setSelectedCategory} />
       <SubContainer userData={userData} />
       <NewChannelContainer />
@@ -43,7 +44,7 @@ function SignedInContainer() {
   }
 
   return (
-    <div>
+    <div className='signedInContainer'>
       {display}
     </div>
   )

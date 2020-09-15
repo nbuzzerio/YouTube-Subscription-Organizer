@@ -64,7 +64,8 @@
     margin: 5%;
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    justify-content: center;
+    grid-row-gap: 1%;
+    grid-column-gap: 2%;
 }
 
 .subTitle {
@@ -74,9 +75,14 @@
 .singleSubContainer {
     margin: auto;
     box-sizing: border-box;
-    height: 150px;
-    width: 100px;
+    height: 120px;
+    width: 120px;
     text-align: center;
+    background-color: #eaeaea;
+}
+
+.subImg {
+    padding-top: 15px;
 }
 
 .filterWrapper {
@@ -89,8 +95,9 @@
 }
 
 .filterSearch {
+    margin-top: 15%;
+    margin-bottom: 5%;
     width: 500px;
-    margin: 10px;
     padding: 5px;
     font-size: 24px;
 }

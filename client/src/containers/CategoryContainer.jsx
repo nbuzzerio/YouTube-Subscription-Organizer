@@ -26,8 +26,7 @@ function CategoryContainer(props) {
 
   let categoryMsg;
   if (categoryData) {
-    categoryMsg = <div>
-      <h3>Select a Category</h3>
+    categoryMsg = <div className='categoryContainer'>
       <CategoryInput setCategoryData={setCategoryData} categoryData={categoryData} userId={props.userData.id} />
       <CategoryCarousel setCategoryData={setCategoryData} categoryData={categoryData} setSelectedCategory={props.setSelectedCategory} userId={props.userData.id} />
     </div>

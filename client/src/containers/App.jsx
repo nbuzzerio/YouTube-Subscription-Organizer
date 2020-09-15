@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import GoogleLoginBtn from '../components/GoogleLoginBtn.jsx';
 import SignedInContainer from './SignedInContainer.jsx';
+import './app.css'
 
 function App(props) {
 
@@ -21,8 +22,9 @@ function App(props) {
 
   if (loggedIn) {
     display = 
-    <div>
-      <button onClick={loggedInHandler.bind(this, false)}>Sign Out</button>
+    <div className="app">
+
+      <button className='signOutBtn' onClick={loggedInHandler.bind(this, false)}>Sign Out</button>
       <SignedInContainer />
     </div>
   } else {
@@ -30,7 +32,7 @@ function App(props) {
   }
   
   return (
-    <div className="app">
+    <div>
       <h1>WELCOME TO YOUTUBE SUBSCRIPTION ORGANIZER</h1>
       {display}
     </div>

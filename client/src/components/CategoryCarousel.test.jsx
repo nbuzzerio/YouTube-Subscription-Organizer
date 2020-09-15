@@ -18,6 +18,12 @@ describe('CategoryCarousel', () => {
         expect(CategoryCarouselWrapper).toHaveLength(1);
     });
 
+    it('renders a message', () => {
+        expect((CategoryCarouselWrapper).find('h4.selectMsg')).toHaveLength(1);
+        expect((CategoryCarouselWrapper).find('h4.selectMsg').text()).toEqual('Select A Category:');
+
+    });
+
     it('renders one category for each category in categoryData', () => {
         expect(CategoryCarouselWrapper.find(Category)).not.toHaveLength(0);
         expect(CategoryCarouselWrapper.find(Category)).not.toHaveLength(1);
