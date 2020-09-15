@@ -63,7 +63,7 @@
 .subsWrapper {
     margin: 5%;
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     grid-row-gap: 1%;
     grid-column-gap: 2%;
 }
@@ -75,10 +75,14 @@
 .singleSubContainer {
     margin: auto;
     box-sizing: border-box;
-    height: 120px;
-    width: 120px;
+    height: 150px;
+    width: 150px;
     text-align: center;
     background-color: #eaeaea;
+
+    -webkit-box-shadow: inset 0 0 3px 1px rgba(0,0,0,0.75);
+    -moz-box-shadow: inset 0 0 3px 1px rgba(0,0,0,0.75);
+    box-shadow: inset 0 0 3px 1px rgba(0,0,0,0.75);
 }
 
 .subImg {

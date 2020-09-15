@@ -29,11 +29,11 @@ function SignedInContainer() {
 
   let display;
   if (userData && selectedCategory) {
-    display = <div>
+    display = <div className='signedInDisplay'>
       <ChosenCategory categoryInfo={selectedCategory} />
     </div>
   } else if (userData && !selectedCategory) {
-    display = <div>
+    display = <div className='signedInDisplay'>
       <h2 className='welcome' >Hello, {userData.given_name}</h2>
       <CategoryContainer userData={userData} setSelectedCategory={setSelectedCategory} />
       <SubContainer userData={userData} />
