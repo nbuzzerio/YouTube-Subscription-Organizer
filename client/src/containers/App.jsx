@@ -23,17 +23,19 @@ function App(props) {
   if (loggedIn) {
     display = 
     <div className="app">
-
       <button className='signOutBtn' onClick={loggedInHandler.bind(this, false)}>Sign Out</button>
       <SignedInContainer />
     </div>
   } else {
-    display = <GoogleLoginBtn />
+    display = 
+    <div className="app">
+      <h1>WELCOME TO YOUTUBE SUBSCRIPTION ORGANIZER</h1>
+      <GoogleLoginBtn />
+    </div>
   }
   
   return (
     <div>
-      <h1>WELCOME TO YOUTUBE SUBSCRIPTION ORGANIZER</h1>
       {display}
     </div>
   )

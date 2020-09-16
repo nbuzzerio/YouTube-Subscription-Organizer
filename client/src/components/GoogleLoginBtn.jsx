@@ -24,7 +24,7 @@ function GoogleLoginBtn(props) {
       }
     }, [])
  
-  return <a href={googleAuth}>Login With Google</a>
+  return <a className='loginBtn' href={googleAuth}>Login With Google</a>
 
 }
 export default GoogleLoginBtn;

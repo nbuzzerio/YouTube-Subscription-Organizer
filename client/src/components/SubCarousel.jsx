@@ -7,7 +7,7 @@ function SubCarousel({ subs }) {
     const [page, setPage] = useState(1)
 
     let filteredList = [];
-    let lastPage = Math.ceil(subs.length / 34);
+    let lastPage = Math.ceil(subs.length / 16);
 
     const handleClick = (e) => {
         
@@ -28,7 +28,7 @@ function SubCarousel({ subs }) {
     
     let listsubs = filteredList.map((sub, i) => <Sub sub={sub} key={i} />);
 
-    let currentListSubs = listsubs.filter((sub, i) => i < (34 * page) && i >= (34 * page) - 34);
+    let currentListSubs = listsubs.filter((sub, i) => i < (16 * page) && i >= (16 * page) - 16);
 
     return (
         <div className='subCarousel'>
