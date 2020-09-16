@@ -13,7 +13,6 @@
 h1 {
   text-align: center;
   font-size: 80px;
-  text-shadow: 4px 3px 9px gray;
   max-width: 1600px;
   min-width: 1300px;
   text-shadow: -1px -1px 0 whitesmoke;
@@ -25,5 +24,3 @@ h1 {
   margin: 5%;
   top: -300px;
 }
-
-
