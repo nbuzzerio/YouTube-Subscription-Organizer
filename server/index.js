@@ -342,6 +342,41 @@ app.post('/postNewCategory', (req, res) => {
     });
 });
 
+app.post('/postChannelToCategory', (req, res) => {
+
+  if (!req.cookies.accessToken) {
+    return res.redirect('/');
+  };
+
+  const oauth2client = new OAuth2(
+    CONFIG.oauth2Credentials.client_id,
+    CONFIG.oauth2Credentials.client_secret,
+    CONFIG.oauth2Credentials.redirect_uris[0],
+  );
+
+  oauth2client.credentials = jwt.verify(req.cookies.accessToken, CONFIG.ACCESS_TOKEN_SECRET);
+
+  const addedChannel = req.body.addedChannel;
+  const categoryId = req.body.categoryId;
+
+  models.Category_Channel.findOrCreate({
+    where: {
+      Category_Channel_Id: `${categoryId}_${addedChannel}`
+    },
+    default: { 
+      ChannelChannelId: addedChannel,
+      CategoryCategoryId: categoryId
+    }
+  })
+    .then( () => {
+      res.sendStatus(200)
+      })
+    .catch(err => {
+      console.log('Error adding channel to category:', err)
+      res.sendStatus(409);
+    });
+});
+
 app.listen(CONFIG.port, () => {
   console.log(`YouTube-Subscription-Organizer app listening at ${CONFIG.baseUrl}`);
 });

@@ -104,6 +104,10 @@
     margin-left: 5px;
 }
 
+.pageBtnTxt:active {
+    text-shadow: -2px -1px 0 whitesmoke;
+}
+
 .pageBtn:active {
     background-color: gray;
 }

@@ -3,6 +3,15 @@ import { shallow, mount } from 'enzyme';
 import Category from './Category.jsx';
 import { act } from 'react-dom/test-utils';
 
+jest.mock("./_postChannelToCategory", (addedChannel, categoryId) => {
+    return {
+        __esModule: true,
+        default: async (addedChannel, categoryId) => {
+            return
+        }
+    };
+});
+
 describe('Category', () => {
 
     let CategoryWrapper;

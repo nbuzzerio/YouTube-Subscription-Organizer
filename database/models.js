@@ -49,7 +49,12 @@ const User = db.define('User', {
     },
 });
 
-const Category_Channel = db.define('Category_Channel', {});
+const Category_Channel = db.define('Category_Channel', {
+    Category_Channel_Id: {
+        type: DataTypes.STRING,
+        primaryKey: true
+    },
+});
 
 const Category = db.define('Category', {
     Category_Id: {

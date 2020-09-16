@@ -3,17 +3,17 @@ import { shallow, mount } from 'enzyme';
 import CategoryInput from '../components/CategoryInput.jsx';
 import { act } from 'react-dom/test-utils';
 
+jest.mock("./_postNewCategory", (newCategory) => {
+    return {
+        __esModule: true,
+        default: async (newCategory) => {
+            return { data: ['category A', 'category B', 'category C', 'category D'] }
+        }
+    };
+});
+
 describe('CategoryInput', () => {
 
-    jest.mock("./_postNewCategory", (newCategory) => {
-        return {
-            __esModule: true,
-            default: async (newCategory) => {
-                console.log(newCategory, 'do we get whatever this is?')
-                return { data: ['category A', 'category B', 'category C', 'category D'] }
-            }
-        };
-    });
 
     let CategoryInputWrapper;
     let setCategoryData = () => { }
