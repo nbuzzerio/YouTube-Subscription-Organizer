@@ -363,7 +363,7 @@ app.post('/postChannelToCategory', (req, res) => {
     where: {
       Category_Channel_Id: `${categoryId}_${addedChannel}`
     },
-    default: { 
+    defaults: { 
       ChannelChannelId: addedChannel,
       CategoryCategoryId: categoryId
     }
@@ -376,6 +376,45 @@ app.post('/postChannelToCategory', (req, res) => {
       res.sendStatus(409);
     });
 });
+
+app.get('/getCategorySubs', (req, res) => {
+  if (!req.cookies.accessToken) {
+    return res.redirect('/')
+  };
+
+  const oauth2client = new OAuth2(
+    CONFIG.oauth2Credentials.client_id,
+    CONFIG.oauth2Credentials.client_secret,
+    CONFIG.oauth2Credentials.redirect_uris[0],
+  );
+
+  oauth2client.credentials = jwt.verify(req.cookies.accessToken, CONFIG.ACCESS_TOKEN_SECRET);
+
+  let userId = req.query.user;
+  let categoryId = req.query.categoryId
+
+  models.Channel.findAll({
+    include: [{
+      model: models.Category_Channel,
+      where: {
+        CategoryCategoryId: categoryId
+      },
+      include: [{
+        model: models.Category,
+        where: {
+          UserUserId: userId
+        }
+      }]
+    }]
+  })
+    .then((response) => {
+      res.send(response);
+    })
+    .catch(err => {
+      console.log('Error finding Category Channels:', err)
+    });
+});
+
 
 app.listen(CONFIG.port, () => {
   console.log(`YouTube-Subscription-Organizer app listening at ${CONFIG.baseUrl}`);

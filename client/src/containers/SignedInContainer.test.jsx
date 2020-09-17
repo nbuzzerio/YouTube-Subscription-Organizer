@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import SignedInContainer from './SignedInContainer.jsx';
-import ChosenCategory from '../components/ChosenCategory.jsx';
+import ChosenCategoryContainer from './ChosenCategoryContainer.jsx';
 import CategoryContainer from './CategoryContainer.jsx';
 import SubContainer from './SubContainer.jsx';
 import NewChannelContainer from './NewChannelContainer.jsx';
@@ -94,7 +94,7 @@ describe('SignedInContainer', () => {
         expect('It Will Pass').toBeTruthy()
     })
 
-    it('should display ChosenCategory component when category is set', async () => {
+    it('should display ChosenCategoryContainer component when category is set', async () => {
         let mountedSignedInContainerWrapper;
         expect('It Will Pass').toBeTruthy()
     })

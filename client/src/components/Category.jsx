@@ -6,15 +6,12 @@ function Category(props) {
     const drop = (e) => {
         e.preventDefault();
         const channel_id = e.dataTransfer.getData('channel_id');
-        console.log('drop Successful:', channel_id)
 
-        postChannelToCategory(channel_id, props.userId);
-        
+        postChannelToCategory(channel_id, props.categoryId);
     }
 
     const dragOver = (e) => {
         e.preventDefault();
-        console.log('dragOver Successful')
     }
 
     const handleClick = (e) => {

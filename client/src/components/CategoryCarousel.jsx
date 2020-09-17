@@ -3,7 +3,7 @@ import Category from '../components/Category.jsx';
 
 function CategoryCarousel(props) {
   let categories = props.categoryData;
-  let listCategories = categories.map((category, i) => <Category category={category.Category_Name} categoryId = {category.Category_Id} userId={props.userId} setSelectedCategory={props.setSelectedCategory} key={i}/>);
+  let listCategories = categories.map((category, i) => <Category category={category.Category_Name} categoryId = {category.Category_Id} setSelectedCategory={props.setSelectedCategory} key={i}/>);
 
     return (
         <div>

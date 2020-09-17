@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import CategoryContainer from './CategoryContainer.jsx';
 import SubContainer from './SubContainer.jsx';
 import NewChannelContainer from './NewChannelContainer.jsx';
-import ChosenCategory from '../components/ChosenCategory.jsx';
+import ChosenCategoryContainer from './ChosenCategoryContainer.jsx';
 import getGoogleUserInfo from '../components/_getGoogleUserInfo.js';
-import './signedInContainer.css'
+import './SignedInContainer.css'
 
 function SignedInContainer() {
 
@@ -30,7 +30,7 @@ function SignedInContainer() {
   let display;
   if (userData && selectedCategory) {
     display = <div className='signedInDisplay'>
-      <ChosenCategory categoryInfo={selectedCategory} />
+      <ChosenCategoryContainer categoryInfo={selectedCategory} userId={userData.id} setSelectedCategory={setSelectedCategory}/>
     </div>
   } else if (userData && !selectedCategory) {
     display = <div className='signedInDisplay'>
