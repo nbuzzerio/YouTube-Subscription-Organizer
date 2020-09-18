@@ -6,8 +6,8 @@ function CategorySubs({categorySubs}) {
     let listsubs = categorySubs.map((sub, i) => <Sub sub={sub} key={i} />);
 
     return (
-        <div>
-            <h4>Subscription List PlaceHolder</h4>
+        <div className='categorySubs'>
+            <h4>Category Subscriptions</h4>
             {listsubs}
         </div>
     )

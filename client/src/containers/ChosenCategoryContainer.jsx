@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import VideoList from '../components/VideoList.jsx';
 import CategorySubs from '../components/CategorySubs.jsx';
 import getCategorySubscriptions from '../components/_getCategorySubscriptions.js';
-// import './ChosenCategoryContainer.css';
+import './ChosenCategoryContainer.css';
 
 function ChosenCategoryContainer({ categoryInfo, userId , setSelectedCategory}) {
 
@@ -32,11 +32,14 @@ console.log(categoryInfo)
     }, [])
 
     return (
-        <div className='choseCategoryContainer'>
-            <h3>Chosen Category {categoryInfo.category}</h3>
-            <button onClick={handleClick}>Choose Another Category</button>
-            <CategorySubs categoryId={categoryInfo.categoryId} categorySubs={categorySubs} />
-            <VideoList />
+        <div>
+            <h3 className='chosenCategoryTitle'>Chosen Category {categoryInfo.category}</h3>
+            <button className='clearCategoryBtn' onClick={handleClick}>Choose Another Category</button>
+            <br/>
+            <div className='chosenCategoryContainer'>
+                <CategorySubs categoryId={categoryInfo.categoryId} categorySubs={categorySubs} />
+                <VideoList categorySubs={categorySubs} />
+            </div>
         </div>
     )
 

@@ -363,14 +363,14 @@ app.post('/postChannelToCategory', (req, res) => {
     where: {
       Category_Channel_Id: `${categoryId}_${addedChannel}`
     },
-    defaults: { 
+    defaults: {
       ChannelChannelId: addedChannel,
       CategoryCategoryId: categoryId
     }
   })
-    .then( () => {
+    .then(() => {
       res.sendStatus(200)
-      })
+    })
     .catch(err => {
       console.log('Error adding channel to category:', err)
       res.sendStatus(409);
@@ -415,6 +415,57 @@ app.get('/getCategorySubs', (req, res) => {
     });
 });
 
+app.get('/getSubVideos', (req, res) => {
+  if (!req.cookies.accessToken) {
+    return res.redirect('/')
+  };
+
+  const oauth2client = new OAuth2(
+    CONFIG.oauth2Credentials.client_id,
+    CONFIG.oauth2Credentials.client_secret,
+    CONFIG.oauth2Credentials.redirect_uris[0],
+  );
+
+  oauth2client.credentials = jwt.verify(req.cookies.accessToken, CONFIG.ACCESS_TOKEN_SECRET);
+
+  const youtube = google.youtube('v3');
+
+  const channelIds = req.query.channelIds
+  if (channelIds) {
+    youtube.channels.list({
+      auth: oauth2client,
+      id: channelIds,
+      part: 'contentDetails',
+      maxResults: 10
+    })
+      .then((response) => {
+
+        let channelsData = response.data.items;
+
+        let uploads = channelsData.map((channelData) => {
+
+          return (
+            youtube.playlistItems.list({
+              auth: oauth2client,
+              playlistId: channelData.contentDetails.relatedPlaylists.uploads,
+              part: 'snippet, contentDetails',
+              maxResults: 10
+            })
+          );
+
+        });
+
+        Promise.all(uploads).then((videos) => {
+          res.send(videos);
+        })
+      })
+      .catch((err) => {
+        res.send(err)
+      });
+  } else {
+    res.sendStatus(200);
+  }
+});
 
 app.listen(CONFIG.port, () => {
   console.log(`YouTube-Subscription-Organizer app listening at ${CONFIG.baseUrl}`);
