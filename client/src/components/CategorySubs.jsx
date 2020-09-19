@@ -7,7 +7,7 @@ function CategorySubs({categorySubs}) {
 
     return (
         <div className='categorySubs'>
-            <h4>Category Subscriptions</h4>
+            <div className='categorySubsTitle'>Category Subscriptions</div>
             {listsubs}
         </div>
     )

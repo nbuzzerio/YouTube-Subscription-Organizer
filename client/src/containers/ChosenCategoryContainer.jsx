@@ -12,14 +12,11 @@ function ChosenCategoryContainer({ categoryInfo, userId , setSelectedCategory}) 
         setSelectedCategory(null)
     };
 
-console.log(categoryInfo)
-
     useEffect(() => {
         let mounted = true;
         getCategorySubscriptions(userId, categoryInfo.categoryId)
             .then(categorySubs => {
                 if (mounted) {
-                    console.log('categorySubs:', categorySubs)
                     setCategorySubs(categorySubs);
                 }
             })
@@ -32,10 +29,9 @@ console.log(categoryInfo)
     }, [])
 
     return (
-        <div>
-            <h3 className='chosenCategoryTitle'>Chosen Category {categoryInfo.category}</h3>
+        <div class='chosenWrapper'>
+            <div className='chosenCategoryTitle'>{categoryInfo.category + ' Subs'}</div>
             <button className='clearCategoryBtn' onClick={handleClick}>Choose Another Category</button>
-            <br/>
             <div className='chosenCategoryContainer'>
                 <CategorySubs categoryId={categoryInfo.categoryId} categorySubs={categorySubs} />
                 <VideoList categorySubs={categorySubs} />
