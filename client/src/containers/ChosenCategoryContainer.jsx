@@ -29,7 +29,7 @@ function ChosenCategoryContainer({ categoryInfo, userId , setSelectedCategory}) 
     }, [])
 
     return (
-        <div class='chosenWrapper'>
+        <div className='chosenWrapper'>
             <div className='chosenCategoryTitle'>{categoryInfo.category + ' Subs'}</div>
             <button className='clearCategoryBtn' onClick={handleClick}>Choose Another Category</button>
             <div className='chosenCategoryContainer'>

@@ -42,7 +42,6 @@ function VideoList({ categorySubs }) {
         }
     }, [categorySubs])
 
-    console.log('videos:', videos)
     let videoList = videos.map((video, i) => {
         return <Video videoData={video} key={i}/>
     });
