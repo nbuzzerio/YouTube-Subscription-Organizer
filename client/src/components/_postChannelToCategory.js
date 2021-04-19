@@ -3,7 +3,7 @@ import axios from 'axios';
 const postChannelToCategory = async (addedChannel, categoryId) => {
   return await axios({
     method: 'post',
-    url: '/postChannelToCategory',
+    url: `${window.location.href}/postChannelToCategory`,
     data: {
       addedChannel: addedChannel,
       categoryId: categoryId

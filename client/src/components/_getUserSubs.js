@@ -3,7 +3,7 @@ import axios from 'axios';
 const getUserSubs = async (userId) => {
   return await axios({
     method: 'get',
-    url: '/getSubs',
+    url: `${window.location.href}/getSubs`,
     params: {
       user: userId
     }

@@ -3,7 +3,7 @@ import axios from 'axios';
 const postNewCategory = async (newCategory, userId) => {
   return await axios({
     method: 'post',
-    url: '/postNewCategory',
+    url: `${window.location.href}/postNewCategory`,
     data: {
       newCategory: newCategory,
       userId: userId

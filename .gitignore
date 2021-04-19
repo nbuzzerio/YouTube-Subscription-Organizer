@@ -3,7 +3,7 @@ node_modules
 client_secret*
 bundle.js
 youtube.config.js
-keys.json
+keys*
 
 package-lock.json
 

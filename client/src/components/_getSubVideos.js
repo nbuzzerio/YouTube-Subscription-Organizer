@@ -3,7 +3,7 @@ import axios from 'axios';
 const getSubVideos = async (channelIds) => {
   return await axios({
     method: 'get',
-    url: '/getSubVideos',
+    url: `${window.location.href}/getSubVideos`,
     params: {
       channelIds: channelIds
     }

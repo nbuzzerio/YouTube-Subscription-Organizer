@@ -68,7 +68,7 @@ app.get('/OAuth', (req, res) => {
 
       // res.redirect({accessToken: accessToken}, '/');
       res.cookie('accessToken', accessToken);
-      return res.redirect('/');
+      return res.redirect(`${window.location.href}`);
     });
   };
 });

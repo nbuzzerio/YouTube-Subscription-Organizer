@@ -3,7 +3,7 @@ import axios from 'axios';
 const getUpdatedUserSubs = async (userId) => {
   return await axios({
     method: 'get',
-    url: '/updateSubs',
+    url: `${window.location.href}/updateSubs`,
     params: {
       user: userId
     }

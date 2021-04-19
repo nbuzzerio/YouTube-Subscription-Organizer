@@ -3,7 +3,7 @@ import axios from 'axios';
 const getCategorySubscriptions = async (userId, categoryId) => {
   return await axios({
     method: 'get',
-    url: '/getCategorySubs',
+    url: `${window.location.href}/getCategorySubs`,
     params: {
       user: userId,
       categoryId: categoryId

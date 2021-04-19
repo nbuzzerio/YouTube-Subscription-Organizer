@@ -67,20 +67,14 @@ const Category = db.define('Category', {
     },
 });
 
-///////ASSOCIACTIONS///////
-//USER
 User.hasMany(Subscription);
 User.hasMany(Category);
-//CHANNEL
 Channel.hasMany(Category_Channel);
 Channel.hasMany(Subscription);
-//CATEGORY
 Category.belongsTo(User);
 Category.hasMany(Category_Channel);
-//SUBSCRIPTIONS
 Subscription.belongsTo(User);
 Subscription.belongsTo(Channel);
-//CATEGORY_CHANNELS
 Category_Channel.belongsTo(Category);
 Category_Channel.belongsTo(Channel);
 
